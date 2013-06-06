@@ -288,7 +288,7 @@
       }
     };
 
-    var pushTag = function (tag) {
+    var pushTag = function (tag, prefilling) {
       tag = trimTag(tag);
 
       if (!tag || tag.length <= 0) return;
@@ -335,7 +335,7 @@
         tlis.push(tag);
         tlid.push(tagId);
 
-        if (tagManagerOptions.AjaxPush != null) {
+        if (tagManagerOptions.AjaxPush != null && prefilling !== true ) {
           $.post(tagManagerOptions.AjaxPush, $.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
         }
 
@@ -362,7 +362,10 @@
           spliceTag(TagIdToRemove, e.data);
         });
 
-        refreshHiddenTagList();
+        if (prefilling !== true) {
+            refreshHiddenTagList();
+        }
+
 
         if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
           obj.hide();
@@ -373,7 +376,7 @@
 
     var prefill = function (pta) {
       $.each(pta, function (key, val) {
-        pushTag(val);
+        pushTag(val, true);
       });
     };
 
